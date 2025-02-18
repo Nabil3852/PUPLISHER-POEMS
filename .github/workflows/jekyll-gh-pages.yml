@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شعر الجاهلية</title>
+    <style>
+        body {
+            font-family: "Traditional Arabic", Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+            margin: 0;
+            padding: 0;
+            background: url('https://source.unsplash.com/1600x900/?desert,camel,mountains') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .logo {
+            width: 150px;
+            height: 150px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Lion_waiting_in_Namibia.jpg/300px-Lion_waiting_in_Namibia.jpg') no-repeat center center/cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .poem {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            color: #8B0000;
+            font-size: 28px;
+        }
+        p {
+            font-size: 22px;
+            color: #333;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo"></div>
+    <div class="poem">
+        <h1>قصيدة امرئ القيس</h1>
+        <p>لِمَن طَلَلٌ بَيْنَ الجُدَيَّةِ والجَبَلِ<br>
+        محلٌّ قديمُ العهدِ طالتْ به الطِّيَلِ</p>
+        <p>عَفَاهُ الرُّبى وَالسَّافِيَاتُ بِلِيْلَهِ<br>
+        وَكَفُّ التَّصَارِيْفِ الَّتِي تَتَكَرَّمُ</p>
+        <p>وقفتُ بهِ مِنْ بعدِ عشرينَ حِجَّةً<br>
+        فلأياً عَرَفتُ الدارَ بعدَ التوهُّمِ</p>
+        <p>فقلتُ لِصَحبي: رُدَّها، فَتَرَدَّدَتْ<br>
+        مع الصُّبحِ، أيدي المِيسِ، مُتَّأَصِّلُ</p>
+        <p>فدَارٌ لأَهْلَى إذْ هُمُ قَطَنُوْهَا<br>
+        بآطامِ أعْلَى بَيثَ صَيْفٍ مُؤَمَّرِ</p>
+    </div>
+</body>
+</html># Sample workflow for building and deploying a Jekyll site to GitHub Pages
+name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
